@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Koincontrol</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- Leave those next 4 lines if you care about users using IE8 -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
+    <script type="text/javascript" src="kc.js"></script>
+ </head>
+  <body>
+
+<div class="container">
+  <h1>KoinControl</h1>
+    <div class="row bg-light  bg-primary" >
+      <div class="col-lg-2">
+        <div class="row bg-primary text-white">
+          <div class="col-lg-12">
+            Coins
+          </div>
+        </div>
+        <div id="allCoins">
+         <!-- <div class="row ">
+            <div class="col-lg-12 bg-light " >
+              <a href="javascript:load('BTC');">Bitcoin</a>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-lg-12 bg-dark text-white " >
+              <a href="javascript:load('XRP');">Ripple</a>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-lg-12 bg-light " >
+              <a href="javascript:load('VEN');">Vechain</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 bg-dark text-white " >
+              <a href="javascript:load('LTC');">Litecoin</a>
+            </div>
+          </div>  -->
+        </div>
+      </div>
+      <div class="col-lg-10">
+       <div class="row bg-primary text-white">
+        <div class="col-lg-9 " >
+          Chart
+        </div>
+        <div class="col-lg-3" >
+          Reddit News
+        </div>
+       </div>
+       <div class="row bg-primary text-white ">
+        <div class="col-lg-8" >
+          <script type="text/javascript">
+
+          var onloadURL = window.location.href;
+          if( onloadURL.indexOf('coin')=='-1'){
+              coin = 'BTC';
+            }else{
+              url = onloadURL.split("?");
+              coinType = url[1];
+              coinType = coinType.split("=");
+              coinType = coinType[1];
+              coin = coinType;
+            }
+
+          baseUrl = "https://widgets.cryptocompare.com/";
+          var scripts = document.getElementsByTagName("script");
+          var embedder = scripts[ scripts.length - 1 ];
+          var cccTheme = {"General":{"showExport":true}};
+          (function (){
+          var appName = encodeURIComponent(window.location.hostname);
+          if(appName==""){appName="local";}
+          var s = document.createElement("script");
+          s.type = "text/javascript";
+          s.async = true;
+          var theUrl = baseUrl+'serve/v3/coin/chart?fsym='+coin+'&tsyms=USD,EUR,CNY,GBP';
+          s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+          embedder.parentNode.appendChild(s);
+          })();
+          </script>
+
+        </div>
+        <div class="col-lg-2" id="redditnews">
+            
+        </div>
+       </div>
+      </div>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      onLoadData();
+    </script>
+  </body>
+</html>
