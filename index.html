@@ -7,9 +7,10 @@
 
     <title>Koincontrol</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="kc.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/kc.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -19,85 +20,90 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
-    <script type="text/javascript" src="kc.js"></script>
+    <script type="text/javascript" src="js/currency.js"></script>
+    <script type="text/javascript" src="js/kc.js"></script>
  </head>
   <body>
-
-<div class="container">
-  <h1>KoinControl ---<span id="selectedCoin"></span></h1>
-    <div class="row bg-light  bg-primary" >
-      <div class="col-lg-2">
-        <div class="row bg-primary text-white">
-          <div class="col-lg-12">
-            Coins
-          </div>
-        </div>
-        <div id="allCoins">
-        
-        </div>
-      </div>
-      <div class="col-lg-10">
-       <div class="row bg-primary text-white">
-        <div class="col-lg-9 " >
-          Chart
-        </div>
-        <div class="col-lg-3" >
-          Reddit News
-        </div>
-       </div>
-       <div class="row text-white ">
-        <div class="col-lg-12" >
-          <script type="text/javascript">
-
-          var onloadURL = window.location.href;
-          if( onloadURL.indexOf('coin')=='-1'){
-              coin = 'BTC';
-            }else{
-              url = onloadURL.split("?");
-              coinType = url[1];
-              coinType = coinType.split("=");
-              coinType = coinType[1];
-              coin = coinType;
-            }
-
-          baseUrl = "https://widgets.cryptocompare.com/";
-          var scripts = document.getElementsByTagName("script");
-          var embedder = scripts[ scripts.length - 1 ];
-          var cccTheme = {"General":{"showExport":true}};
-          (function (){
-          var appName = encodeURIComponent(window.location.hostname);
-          if(appName==""){appName="local";}
-          var s = document.createElement("script");
-          s.type = "text/javascript";
-          s.async = true;
-          var theUrl = baseUrl+'serve/v3/coin/chart?fsym='+coin+'&tsyms=USD,EUR,CNY,GBP';
-          s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
-          embedder.parentNode.appendChild(s);
-          })();
-          </script>
-
-        </div>
-      </div>
-       <div class="row text-white ">
-        <div class="col-lg-6" >
-            <div class="list-group" id="redditnews">
-            </div>
-        </div>
-        <div class="col-lg-6" id="twitternews">
-          <ul class="list-group">
-            <li class="list-group-item active">Cras justo odio</li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Porta ac consectetur ac</li>
-            <li class="list-group-item">Vestibulum at eros</li>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Koincontrol</a>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
           </ul>
         </div>
+      </nav>
+    </header>
+<div class="container-fluid">
+  <div class="row">
+      <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+        <ul class="nav nav-pills flex-column" id="allCoins">
+        </ul>
+      </nav>
+
+      <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          <h1>KoinControl - <span id="selectedCoin"></span></h1>
+
+          <section class="row text-center placeholders">
+            <div class="col-12 placeholder">
+              <script type="text/javascript">
+
+            var onloadURL = window.location.href;
+            if( onloadURL.indexOf('coin')=='-1'){
+                coin = 'BTC';
+              }else{
+                url = onloadURL.split("?");
+                coinType = url[1];
+                coinType = coinType.split("=");
+                coinType = coinType[1];
+                coin = coinType;
+              }
+
+            baseUrl = "https://widgets.cryptocompare.com/";
+            var scripts = document.getElementsByTagName("script");
+            var embedder = scripts[ scripts.length - 1 ];
+            var cccTheme = {"General":{"showExport":true}};
+            (function (){
+            var appName = encodeURIComponent(window.location.hostname);
+            if(appName==""){appName="local";}
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            var theUrl = baseUrl+'serve/v3/coin/chart?fsym='+coin+'&tsyms=USD,EUR,CNY,GBP';
+            s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+            embedder.parentNode.appendChild(s);
+            })();
+            </script>
+        </div>
+      </section>
+      <div class="row">
+        <div class="col-lg-6" >
+            <h2>Reddit News</h2>
+            <ul id="redditnews" class="nav nav-pills flex-column">
+
+            </ul>
+        </div>
+        <div class="col-lg-6" >
+            <h2>Twitter News</h2>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody id="twitternews">
+
+                </tbody>
+              </table>
+            </div>
+        </div>
        </div>
       </div>
-</div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    </main>
+  </div>
+       
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    
     <script type="text/javascript">
       onLoadData();
     </script>
