@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="kc.css">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- Leave those next 4 lines if you care about users using IE8 -->
@@ -23,7 +25,7 @@
   <body>
 
 <div class="container">
-  <h1>KoinControl</h1>
+  <h1>KoinControl ---<span id="selectedCoin"></span></h1>
     <div class="row bg-light  bg-primary" >
       <div class="col-lg-2">
         <div class="row bg-primary text-white">
@@ -32,26 +34,7 @@
           </div>
         </div>
         <div id="allCoins">
-         <!-- <div class="row ">
-            <div class="col-lg-12 bg-light " >
-              <a href="javascript:load('BTC');">Bitcoin</a>
-            </div>
-          </div>
-          <div class="row ">
-            <div class="col-lg-12 bg-dark text-white " >
-              <a href="javascript:load('XRP');">Ripple</a>
-            </div>
-          </div>
-          <div class="row ">
-            <div class="col-lg-12 bg-light " >
-              <a href="javascript:load('VEN');">Vechain</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 bg-dark text-white " >
-              <a href="javascript:load('LTC');">Litecoin</a>
-            </div>
-          </div>  -->
+        
         </div>
       </div>
       <div class="col-lg-10">
@@ -63,8 +46,8 @@
           Reddit News
         </div>
        </div>
-       <div class="row bg-primary text-white ">
-        <div class="col-lg-8" >
+       <div class="row text-white ">
+        <div class="col-lg-12" >
           <script type="text/javascript">
 
           var onloadURL = window.location.href;
@@ -95,8 +78,20 @@
           </script>
 
         </div>
-        <div class="col-lg-2" id="redditnews">
-            
+      </div>
+       <div class="row text-white ">
+        <div class="col-lg-6" >
+            <div class="list-group" id="redditnews">
+            </div>
+        </div>
+        <div class="col-lg-6" id="twitternews">
+          <ul class="list-group">
+            <li class="list-group-item active">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+          </ul>
         </div>
        </div>
       </div>
