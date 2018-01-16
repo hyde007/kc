@@ -13,7 +13,7 @@ function onLoadData(){
 		var name = param[1].split("=")[1];
 		$.get( "https://www.reddit.com/r/"+name+"/hot.json", function( data ) {
 	  		for(var j=1;j<data.data.children.length;j++){
-  				$('#redditnews').append('<tr><td><a href="https://reddit.com'+data.data.children[j].data.permalink+'" target="_blank">'+data.data.children[j].data.title+'</a></td></tr>');
+  				$('#redditnews').append('<li class="nav-item border"><a class="ml-2" href="https://reddit.com'+data.data.children[j].data.permalink+'" target="_blank">'+data.data.children[j].data.title+'</a></li>');
 	  		}
 	  		
 		});
