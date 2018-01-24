@@ -1,7 +1,7 @@
-var mcache = require('memory-cache');
 var Client = require('node-rest-client').Client;
 var client = new Client();
 var router = require('express').Router();
+var mcache = require('memory-cache');
 
 
 // Caching setup
@@ -9,6 +9,7 @@ var cache = (duration) => {
   return (req, res, next) => {
     let key = '__express__' + req.originalUrl || req.url
     let cachedBody = mcache.get(key)
+    console.log('cache method:'+key+" size:"+mcache.size());
     if (cachedBody) {
       res.send(cachedBody)
       console.log('Cached Response');
@@ -25,6 +26,8 @@ var cache = (duration) => {
   }
 }
 
+
+
 // Home Page hit
 router.get('/',function(req,res){
 	console.log('Site hit');
@@ -32,7 +35,7 @@ router.get('/',function(req,res){
 });
 
 // Price Data for Histogram in Minutes
-router.get('/histominute/:id',cache(10),function(req,res){
+router.get('/histominute/:id',cache(60),function(req,res){
 	console.log(req.params.id);
 	getHistoMinData(req.params.id,res);
 });
