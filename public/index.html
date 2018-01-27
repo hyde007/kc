@@ -54,7 +54,7 @@
 
           <section class="row text-center placeholders">
             <div class="col-12 placeholder">
-              <div id = "container" style = "width: 550px; height: 250px; margin: 0 auto">
+              <div id = "container" style = "width: 700px; height: 250px; margin: 0 auto">
               </div>
               <script language = "JavaScript">
 
@@ -75,25 +75,26 @@
                    function drawChart() {
                       // Define the chart to be drawn.
                       var data = new google.visualization.DataTable();
-                      data.addColumn('date', 'Date');
+                      data.addColumn('datetime', 'Date');
                       data.addColumn('number', 'USD');
                        for(var i=0;i<priceData.length;i++){
-                          data.addRow([new Date(priceData[i].time*1000),priceData[i].high]);
+                          var newDate = new Date(priceData[i].time*1000);
+                          data.addRow([new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(),newDate.getHours(),newDate.getMinutes(),newDate.getSeconds(),newDate.getMilliseconds()),priceData[i].high]);
                         }
-
-                        var dateFormatter = new google.visualization.DateFormat({pattern: 'dd/MM/yyyy HH:mm'});
+                        console.log(data);
+                        var dateFormatter = new google.visualization.DateFormat({pattern: 'dd/MM/yyyy HH:mm:ss'});
                       dateFormatter.format(data, 0);
 
                       // Set chart options
                       var options = {'title' : 'Bitcoin USD',
                          hAxis: {
-                             format: 'dd/MM/yyyy HH:mm',
-                            title: 'Date'
+                             format: 'dd/MM/yyyy HH:mm:ss',
+                             title: 'Date'
                          },
                          vAxis: {
                             title: 'USD'
                          },   
-                         'width':550,
+                         'width':700,
                          'height':250   
                       };
 
@@ -115,8 +116,13 @@
             </ul>
         </div>
         <div class="col-lg-6" >
-             <h2>Twitter News</h2>
-            <ul id="twitternews" class="nav nav-pills flex-column">
+            <h2>Twitter News</h2>
+            <h3 id="OfficalTweet">Offical Account</h3>
+            <ul id="twitternews1" class="nav nav-pills flex-column">
+
+            </ul>
+            <h3 id="pplTweets">What people are tweeting</h3>
+            <ul id="twitternews2" class="nav nav-pills flex-column">
 
             </ul>
         </div>

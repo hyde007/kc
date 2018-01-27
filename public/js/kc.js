@@ -21,22 +21,41 @@ function onLoadData(){
 		});
 		$('#selectedCoin').append(name);
 
+		// Main Account Data
+		
+		$.get( "http://localhost:8081/twitterData/twMainAcc/"+coin, function( data ) {	
+			for(var j=0;j<data.length;j++){
+	  			if(data[j].entities.urls[0]!= undefined){
+	  				$('#twitternews1').append('<li class="nav-item border"><a class="ml-2" href="'+data[j].entities.urls[0].url+'" target="_blank">'+data[j].text+'</a></li>');	
+	  			}
+  			}
+  			if(data.length>0){
+  				$('#OfficalTweet').show();
+  			}
+  		});
 
-
-		$.get( "http://localhost:8081/twitterData/twitterData/"+coin, function( data ) {
-	  		for(var j=0;j<data.statuses.length;j++){
-  				$('#twitternews').append('<li class="nav-item border">'+data.statuses[j].text+'</li>');
+		// HashTag Data
+		$.get( "http://localhost:8081/twitterData/twitterData/"+coin, function( data ) {			
+			for(var j=0;j<data.statuses.length;j++){
+				if(data.statuses[j].entities.urls[0]!= undefined){
+					$('#twitternews2').append('<li class="nav-item border"><a class="ml-2" href="'+data.statuses[j].entities.urls[0].url+'" target="_blank">'+data.statuses[j].text+'</a></li>');	
+				}
 	  		}
-	  		
+	  		if(data.statuses.length>0){
+  				$('#pplTweets').show();
+  			}
 		});
-	
+		
+		
+
+		
+
 	}
 	
 
 }
 
-
- function load(coin,name){ 		
+function load(coin,name){ 		
 
         var url = window.location.href;
         if(url.indexOf('?') ==  '-1'){

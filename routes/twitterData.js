@@ -1,14 +1,9 @@
-var Twitter = require('twitter');
 var router = require('express').Router();
 var mcache = require('memory-cache');
 var HashMap = require('hashmap');
 var dotenv = require('dotenv').config({path: './devData.env'});
 
-var client = new Twitter({
-  consumer_key: process.env.TW_CONSUMER_KEY,
-  consumer_secret: process.env.TW_CONSUMER_SECRET,
-  bearer_token: process.env.TW_BEARER_TOKEN
-});
+
 
 var hashTag = new HashMap();
 hashTag.set('BTC','#BTC,#Bitcoin,#crypto');
@@ -37,17 +32,19 @@ var cache = (duration) => {
   }
 }
 
-// Price Data for Histogram in Minutes
+// Fetch popular tweets using hashtags
 router.get('/twitterData/:id',cache(60),function(req,res){
-	getTWData(req.params.id,res);
+	var coin = configVal.get('TW_'+req.params.id+'_POPULAR');
+  twClient.get('search/tweets', {q: coin,count:15,result_type:'popular'}, function(error, tweets, response) {
+      res.send(tweets);
+  });
 });
 
-getTWData = function(req,res){
-	req = hashTag.get(req);
-	console.log('req:'+req);
-	client.get('search/tweets', {q: req,count:15,result_type:'popular'}, function(error, tweets, response) {
-   		res.send(tweets);
-	});
-}
-
+// Fetch timelines tweets from official accounts
+router.get('/twMainAcc/:id',cache(60),function(req,res){
+  var mainAcc = configVal.get('TW_'+req.params.id+'_MA');
+  twClient.get('statuses/user_timeline', {screen_name: mainAcc,count:5,include_rts:true}, function(error, tweets, response) {
+      res.send(tweets);
+  });
+});
 module.exports = router;
