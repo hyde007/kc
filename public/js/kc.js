@@ -1,5 +1,4 @@
 function onLoadData(){
-
 	$.get( "https://api.coinmarketcap.com/v1/ticker/?limit=50", function( data ) {
 	  	for(var i=0;i<50;i++){
 	  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
@@ -29,26 +28,49 @@ function onLoadData(){
 	  		}
 	  		
 		});
-	
 	}
-	
-
 }
 
+function load(coin,name){ 		
+    var url = window.location.href;
+    if(url.indexOf('?') ==  '-1'){
+      url = "?coin="+coin+'&name='+name;
+    }else{
+      url = url.split("?");
+      url = url[0];
+      url = url + "?coin="+coin+"&name="+name;
+    }
+    window.location.href=url;
+}
 
- function load(coin,name){ 		
-
-        var url = window.location.href;
-        if(url.indexOf('?') ==  '-1'){
-          url = "?coin="+coin+'&name='+name;
-        }else{
-          url = url.split("?");
-          url = url[0];
-          url = url + "?coin="+coin+"&name="+name;
+var drawChart = function(priceData){
+    var ctx = document.getElementById("myChart");
+    var timeData = [];
+    var valueData = [];
+    for(var i=0;i<priceData.length;i++){
+      console.log("priceData[i]"+new Date(priceData[i].time*1000));
+      timeData.push(new Date(priceData[i].time*1000));
+      valueData.push(priceData[i].high);
+    }
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: coin,
+                data: valueData,
+                backgroundColor: '#3CBA9F'
+            }],
+            labels: timeData
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'minute'
+                    }
+                }]
+            }
         }
-        window.location.href=url;
-
-
-        
-
+    });
 }
