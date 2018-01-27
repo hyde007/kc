@@ -13,13 +13,9 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <script type="text/javascript" src="js/currency.js"></script>
     <script type="text/javascript" src="js/kc.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js">
-    </script>
-    <script type = "text/javascript">
-        google.charts.load('current', {packages: ['corechart','line']});  
-    </script>
-  
+    <script src="js/jquery.min.js"></script>
+    <script type = "text/javascript" src="js/moment.js"></script>
+    <script type = "text/javascript" src="js/Chart.min.js"></script>
  </head>
   <body>
     <header>
@@ -54,8 +50,7 @@
 
           <section class="row text-center placeholders">
             <div class="col-12 placeholder">
-              <div id = "container" style = "width: 700px; height: 250px; margin: 0 auto">
-              </div>
+              <canvas id="myChart" width="550" height="250"></canvas>
               <script language = "JavaScript">
 
                 var onloadURL = window.location.href;
@@ -70,47 +65,15 @@
                 }
 
                 $.get( "http://localhost:8081/priceData/histominute/"+coin, function( priceData ) {
-                  
-                
-                   function drawChart() {
-                      // Define the chart to be drawn.
-                      var data = new google.visualization.DataTable();
-                      data.addColumn('datetime', 'Date');
-                      data.addColumn('number', 'USD');
-                       for(var i=0;i<priceData.length;i++){
-                          var newDate = new Date(priceData[i].time*1000);
-                          data.addRow([new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(),newDate.getHours(),newDate.getMinutes(),newDate.getSeconds(),newDate.getMilliseconds()),priceData[i].high]);
-                        }
-                        console.log(data);
-                        var dateFormatter = new google.visualization.DateFormat({pattern: 'dd/MM/yyyy HH:mm:ss'});
-                      dateFormatter.format(data, 0);
+                      drawChart(priceData);
+                });
 
-                      // Set chart options
-                      var options = {'title' : 'Bitcoin USD',
-                         hAxis: {
-                             format: 'dd/MM/yyyy HH:mm:ss',
-                             title: 'Date'
-                         },
-                         vAxis: {
-                            title: 'USD'
-                         },   
-                         'width':700,
-                         'height':250   
-                      };
-
-                      // Instantiate and draw the chart.
-                      var chart = new google.visualization.LineChart(document.getElementById('container'));
-                      chart.draw(data, options);
-                   }
-                   google.charts.setOnLoadCallback(drawChart);
-
-         });
       </script>
         </div>
       </section>
       <div class="row">
         <div class="col-lg-6" >
-            <h2>Reddit News</h2>
+            <h2 id="redditHeader">Reddit News</h2>
             <ul id="redditnews" class="nav nav-pills flex-column">
 
             </ul>
@@ -131,7 +94,6 @@
     </main>
   </div>
        
-    <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/popper.min.js"></script>
 

@@ -1,8 +1,6 @@
-var Client = require('node-rest-client').Client;
-var client = new Client();
 var router = require('express').Router();
 var mcache = require('memory-cache');
-var HashMap = require('hashmap');
+
 
 // Caching setup
 var cache = (duration) => {
@@ -26,18 +24,10 @@ var cache = (duration) => {
   }
 }
 
-// Price Data for Histogram in Minutes
-router.get('/histominute/:id',cache(60),function(req,res){
-	getHistoMinData(req.params.id,res);
+// Get Subreddit
+router.get('/subreddits/:id',cache(600),function(req,res){
+  var subreddits = configVal.get('REDDIT_'+req.params.id);
+  res.send(subreddits);
 });
-
-// Rest Call to cryptocompare to get price data
-getHistoMinData = function(coin,res){
-	client.get("https://min-api.cryptocompare.com/data/histominute?fsym="+coin+"&tsym=USD&limit=60&aggregate=1", function (data, response) {
-    	res.send(data.Data);
-    });
-}
-
-
 
 module.exports = router;
