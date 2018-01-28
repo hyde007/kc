@@ -33,7 +33,7 @@ router.get('/histominute/:id',cache(60),function(req,res){
 
 // Rest Call to cryptocompare to get price data
 getHistoMinData = function(coin,res){
-	client.get("https://min-api.cryptocompare.com/data/histominute?fsym="+coin+"&tsym=USD&limit=60&aggregate=1", function (data, response) {
+	client.get("https://min-api.cryptocompare.com/data/histominute?fsym="+coin+"&tsym=USD&aggregate=1", function (data, response) {
     	res.send(data.Data);
     });
 }
