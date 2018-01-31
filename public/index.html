@@ -16,8 +16,15 @@
       <script type = "text/javascript" src="js/Chart.min.js"></script>
    </head>
    <body>
+         
       <header>
-         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <div id="progressBar" class="fixed-top">
+                 <h2>Loading Data...</h2>
+                 <div class="progress" >
+                   <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
+                 </div>
+          </div>
+         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">            
             <a class="navbar-brand" href="#">Koincontrol<sup>Beta</sup></a>
             <button class="navbar-toggler d-lg-none collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -42,54 +49,38 @@
                <ul class="nav nav-pills flex-column" id="allCoins">
                </ul>
             </nav>
-            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">       
                <h1><span id="selectedCoin"></span></h1>
                <section class="row text-center placeholders">
                   <div class="col-12 placeholder">
                      <canvas id="myChart" width="550" height="250"></canvas>
-                     <script language = "JavaScript">
-                        var onloadURL = window.location.href;
-                        if( onloadURL.indexOf('coin')=='-1'){
-                            coin = 'BTC';
-                        }else{
-                            url = onloadURL.split("?");
-                            coinType = url[1];
-                            coinType = coinType.split("=");
-                            coinType = coinType[1];
-                            coin = coinType;
-                        }
-                        
-                        $.get( "http://localhost:8081/priceData/histominute/"+coin, function( priceData ) {
-                              drawChart(priceData);
-                        });
-                        
-                     </script>
                   </div>
                </section>
                <div class="row">
                   <div class="col-lg-6" >
                      <h2 id="redditHeader">Reddit News</h2>
-                     <ul id="redditnews" class="nav nav-pills flex-column">
-                     </ul>
+                     <div id="redditnews" class="list-group">
+                     </div>
                   </div>
                   <div class="col-lg-6" >
                      <h2>Twitter News</h2>
                      <h3 id="OfficalTweet">Offical Account</h3>
-                     <ul id="twitternews1" class="nav nav-pills flex-column">
-                     </ul>
+                     <div id="twitternews1" class="list-group">
+                     </div>
                      <h3 id="pplTweets">What people are tweeting</h3>
-                     <ul id="twitternews2" class="nav nav-pills flex-column">
-                     </ul>
+                     <div id="twitternews2" class="list-group">
+                     </div>
                   </div>
                </div>
          </div>
          </main>
       </div>
       <div style="padding:10px"></div>
+      <input type="hidden" id="currentCoin" name="currentCoin" value="" />
       <script src="js/bootstrap.min.js"></script>
       <script src="js/popper.min.js"></script>
       <script type="text/javascript">
-         onLoadData();
+         onLoadData('BTC','Bitcoin','1');
       </script>
    </body>
 </html>

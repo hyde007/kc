@@ -1,27 +1,38 @@
-function onLoadData(){
-	$.get( "https://api.coinmarketcap.com/v1/ticker/?limit=50", function( data ) {
-	  	for(var i=0;i<50;i++){
-	  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
-	  	}
-	});
+function onLoadData(coin,name,onLoad){
+	
+	if(onLoad == 1){
+			$.get( "https://api.coinmarketcap.com/v1/ticker/?limit=50", function( data ) {
+			checkProgressBar();
+			for(var i=0;i<50;i++){
+		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
+		  	}
+		});	
+	}
+	
+	//Clear the data
+	$('#redditnews').empty();
+	$('#selectedCoin').empty();
+	$('#twitternews1').empty();
+	$('#twitternews2').empty();
+	if(typeof myLineChart!=='undefined'){
+		myLineChart.destroy();
+	}
+	$('#currentCoin')[0].value=coin;
+	// Load subreddits
 
-	var url = window.location.href;
-	if(url.indexOf('name') != -1){
-		var params = url.split("?");
-		var param = params[1].split("&");
-		var name = param[1].split("=")[1];
-		var coinParam = params[0].split("&");
-		var coin = param[0].split("=")[1];
-		$.get( "http://localhost:8081/genericData/subreddits/"+coin, function( subreddit ) {
+	$.get( "http://localhost:8081/genericData/subreddits/"+coin, function( subreddit ) {
 				if(subreddit.length > 0){
 					$('#redditHeader').show();
 				}else{
 					$('#redditHeader').hide();
 				}
 	  		$.get( "https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5", function( data ) {
+	  			console.log('All Reddit Data');
 		  		for(var j=1;j<data.data.children.length;j++){
-	  				$('#redditnews').append('<li class="nav-item border"><a class="ml-2" href="https://reddit.com'+data.data.children[j].data.permalink+'" target="_blank">'+data.data.children[j].data.title+'</a></li>');
+		  			 var createdDate = timeAgo(data.data.children[j].data.created_utc);
+	  				$('#redditnews').append('<a class="list-group-item list-group-item-action list-group-item-light" href="https://reddit.com'+data.data.children[j].data.permalink+'" target="_blank"> <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.data.children[j].data.title+'</h5></div><small>'+createdDate+'</small><small> Comments :'+data.data.children[j].data.num_comments+'</small> </a>');
 		  		}
+		  		checkProgressBar();
 		  		if(data.data.children.length > 0){
 		  			$('#redditnews').show();
 		  		}else{
@@ -33,13 +44,14 @@ function onLoadData(){
 		$('#selectedCoin').append(name);
 
 		// Main Account Data
-		
 		$.get( "http://localhost:8081/twitterData/twMainAcc/"+coin, function( data ) {	
+			console.log('All Official Tweet');
 			for(var j=0;j<data.length;j++){
 	  			if(data[j].entities.urls[0]!= undefined){
-	  				$('#twitternews1').append('<li class="nav-item border"><a class="ml-2" href="'+data[j].entities.urls[0].url+'" target="_blank">'+data[j].text+'</a></li>');	
+	  				$('#twitternews1').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data[j].text+'</h5></div><small>Reweeted '+data[j].retweet_count+' </small><small>Favorite '+data[j].favorite_count+'</small></a>');	
 	  			}
   			}
+  			checkProgressBar();
   			if(data.length>0){
   				$('#OfficalTweet').show();
   			}else{
@@ -48,31 +60,33 @@ function onLoadData(){
   		});
 
 		// HashTag Data
-		$.get( "http://localhost:8081/twitterData/twitterData/"+coin, function( data ) {			
+		$.get( "http://localhost:8081/twitterData/twitterData/"+coin, function( data ) {	
+			console.log('People Tweet');		
 			for(var j=0;j<data.statuses.length;j++){
 				if(data.statuses[j].entities.urls[0]!= undefined){
-					$('#twitternews2').append('<li class="nav-item border"><a class="ml-2" href="'+data.statuses[j].entities.urls[0].url+'" target="_blank">'+data.statuses[j].text+'</a></li>');	
+					$('#twitternews2').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data.statuses[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.statuses[j].text+'</h5></div></a>');	
 				}
 	  		}
+	  		checkProgressBar();
 	  		if(data.statuses.length>0){
   				$('#pplTweets').show();
   			}else{
   				$('#pplTweets').hide();
   			}
 		});
-	}
+
+		$.get( "http://localhost:8081/priceData/histominute/"+coin, function( priceData) {
+			console.log('All Price Data');
+			drawChart(priceData,coin);
+			checkProgressBar();
+        });
+	
 }
 
 function load(coin,name){ 		
-    var url = window.location.href;
-    if(url.indexOf('?') ==  '-1'){
-      url = "?coin="+coin+'&name='+name;
-    }else{
-      url = url.split("?");
-      url = url[0];
-      url = url + "?coin="+coin+"&name="+name;
-    }
-    window.location.href=url;
+	$('#currentCoin')[0].value=coin;
+	checkProgressBar();
+	onLoadData(coin,name);
 }
 
 var drawChart = function(priceData){
@@ -83,7 +97,8 @@ var drawChart = function(priceData){
       timeData.push(new Date(priceData[i].time*1000));
       valueData.push(priceData[i].high);
     }
-    var myLineChart = new Chart(ctx, {
+    var coin = $('#currentCoin')[0].value;
+    myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
@@ -98,11 +113,60 @@ var drawChart = function(priceData){
                 xAxes: [{
                     type: 'time',
                     time: {
-                        unit: 'minute'
+                     unit: 'minute'
                     }
                 }]
             }
 
         }
     });
+    checkProgressBar();
+
 }
+
+checkProgressBar = function(){
+	if(typeof count == 'undefined'){
+		count = 0;
+	}
+	if($('#progress').is(':visible')){
+		var widthPercent = $("#progress").width() / $('#progress').parent().width() * 100;
+		console.log('widthPercent:'+widthPercent);
+   		if(widthPercent < 100){
+	   			if((widthPercent + 20) == 100){
+	   				count = 0;
+	   				$('#progress').width('100%');
+	   				//$('#progressBar').hide();
+	   			}else{
+	   				if(count != 5){
+	   				newWidth = newWidth + '%';
+	   				var currentWidth = ($("#progress").width() / $('#progress').parent().width() * 100);
+	   				console.log("currentWidth:"+currentWidth+"count"+count);	
+	   				var newWidth = (100-currentWidth)/(5-count);
+	   				newWidth = newWidth + '%';
+	   				console.log('++++++'+newWidth);
+	   				$('#progress').width(newWidth);
+	   				console.log('After:'+($("#progress").width() / $('#progress').parent().width() * 100));
+	   				count = count + 1;
+	   			}else{
+	   				count = 0;
+	   				$('#progress').width('0%');
+	   				//$('#progressBar').hide();
+	   			}
+   			}
+   		}else{
+   			//$('#progressBar').hide();
+   		}
+	}else{
+		count = 1;
+		$('#progressBar').show();
+		$('#progress').width('20%');
+	}
+		
+}
+
+timeAgo = function(prevDate){
+	var prevDate = new Date(prevDate*1000);
+	return prevDate.getDate()+' '+months[prevDate.getMonth()];
+}
+
+ var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Mov", "Dec"];
