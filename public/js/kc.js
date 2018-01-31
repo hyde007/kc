@@ -27,8 +27,7 @@ function onLoadData(coin,name,onLoad){
 					$('#redditHeader').hide();
 				}
 	  		$.get( "https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5", function( data ) {
-	  			console.log('All Reddit Data');
-		  		for(var j=1;j<data.data.children.length;j++){
+	  			for(var j=1;j<data.data.children.length;j++){
 		  			 var createdDate = timeAgo(data.data.children[j].data.created_utc);
 	  				$('#redditnews').append('<a class="list-group-item list-group-item-action list-group-item-light" href="https://reddit.com'+data.data.children[j].data.permalink+'" target="_blank"> <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.data.children[j].data.title+'</h5></div><small>'+createdDate+'</small><small> Comments :'+data.data.children[j].data.num_comments+'</small> </a>');
 		  		}
@@ -45,7 +44,6 @@ function onLoadData(coin,name,onLoad){
 
 		// Main Account Data
 		$.get( "http://localhost:8081/twitterData/twMainAcc/"+coin, function( data ) {	
-			console.log('All Official Tweet');
 			for(var j=0;j<data.length;j++){
 	  			if(data[j].entities.urls[0]!= undefined){
 	  				$('#twitternews1').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data[j].text+'</h5></div><small>Reweeted '+data[j].retweet_count+' </small><small>Favorite '+data[j].favorite_count+'</small></a>');	
@@ -61,7 +59,6 @@ function onLoadData(coin,name,onLoad){
 
 		// HashTag Data
 		$.get( "http://localhost:8081/twitterData/twitterData/"+coin, function( data ) {	
-			console.log('People Tweet');		
 			for(var j=0;j<data.statuses.length;j++){
 				if(data.statuses[j].entities.urls[0]!= undefined){
 					$('#twitternews2').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data.statuses[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.statuses[j].text+'</h5></div></a>');	
@@ -76,7 +73,6 @@ function onLoadData(coin,name,onLoad){
 		});
 
 		$.get( "http://localhost:8081/priceData/histominute/"+coin, function( priceData) {
-			console.log('All Price Data');
 			drawChart(priceData,coin);
 			checkProgressBar();
         });
@@ -130,8 +126,7 @@ checkProgressBar = function(){
 	}
 	if($('#progress').is(':visible')){
 		var widthPercent = $("#progress").width() / $('#progress').parent().width() * 100;
-		console.log('widthPercent:'+widthPercent);
-   		if(widthPercent < 100){
+		if(widthPercent < 100){
 	   			if((widthPercent + 20) == 100){
 	   				count = 0;
 	   				$('#progress').width('100%');
@@ -140,17 +135,13 @@ checkProgressBar = function(){
 	   				if(count != 5){
 	   				newWidth = newWidth + '%';
 	   				var currentWidth = ($("#progress").width() / $('#progress').parent().width() * 100);
-	   				console.log("currentWidth:"+currentWidth+"count"+count);	
 	   				var newWidth = (100-currentWidth)/(5-count);
 	   				newWidth = newWidth + '%';
-	   				console.log('++++++'+newWidth);
 	   				$('#progress').width(newWidth);
-	   				console.log('After:'+($("#progress").width() / $('#progress').parent().width() * 100));
 	   				count = count + 1;
 	   			}else{
 	   				count = 0;
 	   				$('#progress').width('0%');
-	   				//$('#progressBar').hide();
 	   			}
    			}
    		}else{
