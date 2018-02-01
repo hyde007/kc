@@ -1,7 +1,7 @@
 function onLoadData(coin,name,onLoad){
 	
 	if(onLoad == 1){
-			$.get( "https://api.coinmarketcap.com/v1/ticker/?limit=50", function( data ) {
+			$.get( "https://api.coinmarketcap.com/v1/ticker/", function( data ) {
 			checkProgressBar();
 			for(var i=0;i<50;i++){
 		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
@@ -20,7 +20,7 @@ function onLoadData(coin,name,onLoad){
 	$('#currentCoin')[0].value=coin;
 	// Load subreddits
 
-	$.get( "http://localhost:8081/genericData/subreddits/"+coin, function( subreddit ) {
+	$.get( "/genericData/subreddits/"+coin, function( subreddit ) {
 				if(subreddit.length > 0){
 					$('#redditHeader').show();
 				}else{
@@ -43,7 +43,7 @@ function onLoadData(coin,name,onLoad){
 		$('#selectedCoin').append(name);
 
 		// Main Account Data
-		$.get( "http://localhost:8081/twitterData/twMainAcc/"+coin, function( data ) {	
+		$.get( "/twitterData/twMainAcc/"+coin, function( data ) {	
 			for(var j=0;j<data.length;j++){
 	  			if(data[j].entities.urls[0]!= undefined){
 	  				$('#twitternews1').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data[j].text+'</h5></div><small>Reweeted '+data[j].retweet_count+' </small><small>Favorite '+data[j].favorite_count+'</small></a>');	
@@ -58,7 +58,7 @@ function onLoadData(coin,name,onLoad){
   		});
 
 		// HashTag Data
-		$.get( "http://localhost:8081/twitterData/twitterData/"+coin, function( data ) {	
+		$.get( "/twitterData/twitterData/"+coin, function( data ) {	
 			for(var j=0;j<data.statuses.length;j++){
 				if(data.statuses[j].entities.urls[0]!= undefined){
 					$('#twitternews2').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data.statuses[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.statuses[j].text+'</h5></div></a>');	
@@ -72,7 +72,7 @@ function onLoadData(coin,name,onLoad){
   			}
 		});
 
-		$.get( "http://localhost:8081/priceData/histominute/"+coin, function( priceData) {
+		$.get( "/priceData/histominute/"+coin, function( priceData) {
 			drawChart(priceData,coin);
 			checkProgressBar();
         });
