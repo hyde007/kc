@@ -94,13 +94,15 @@ var drawChart = function(priceData){
       valueData.push(priceData[i].high);
     }
     var coin = $('#currentCoin')[0].value;
+    var today = new Date();
     myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
                 label: coin,
                 data: valueData,
-                backgroundColor: '#3CBA9F'
+                backgroundColor: '#3CBA9F',
+                fill: false
             }],
             labels: timeData
         },
@@ -109,11 +111,22 @@ var drawChart = function(priceData){
                 xAxes: [{
                     type: 'time',
                     time: {
-                     unit: 'minute'
+                     displayFormats: {
+	                        hour: 'hA'
+	                   	}
+                    },
+                    scaleLabel: {
+                    	display: true,
+                    	labelString: today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear()
+                    }
+                }],
+                yAxes: [{
+                	scaleLabel: {
+                    	display: true,
+                    	labelString: 'USD'
                     }
                 }]
             }
-
         }
     });
     checkProgressBar();
