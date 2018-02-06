@@ -80,3 +80,8 @@ sup{
   padding: 10px;
   color:#ffff;
 }
+
+#navbarSupportedContent{
+  height: 150px;
+  overflow: scroll;
+}

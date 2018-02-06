@@ -5,7 +5,9 @@ function onLoadData(coin,name,onLoad){
 			checkProgressBar();
 			for(var i=0;i<50;i++){
 		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
+		  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
 		  	}
+
 		});	
 	}
 	
@@ -18,6 +20,9 @@ function onLoadData(coin,name,onLoad){
 		myLineChart.destroy();
 	}
 	$('#currentCoin')[0].value=coin;
+	if($("#navbarSupportedContent").is(":visible")){
+		$("#navbarSupportedContent").collapse('hide');
+	}
 	// Load subreddits
 
 	$.get( "/genericData/subreddits/"+coin, function( subreddit ) {
