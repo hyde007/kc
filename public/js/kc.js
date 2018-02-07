@@ -1,11 +1,11 @@
 function onLoadData(coin,name,onLoad){
 	
 	if(onLoad == 1){
-			$.get( "https://api.coinmarketcap.com/v1/ticker/", function( data ) {
+			$.get( "https://api.coinmarketcap.com/v1/ticker/", function( coindata ) {
 			checkProgressBar();
-			for(var i=0;i<50;i++){
-		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
-		  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+data[i]['symbol']+'\',\''+data[i]['name']+'\');">'+data[i]['name']+'</a></li>');
+			for(var i=0;i<coindata.length;i++){
+		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+coindata[i]['symbol']+'\',\''+coindata[i]['name']+'\');">'+coindata[i]['name']+'</a></li>');
+		  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+coindata[i]['symbol']+'\',\''+coindata[i]['name']+'\');">'+coindata[i]['name']+'</a></li>');
 		  	}
 
 		});	
@@ -31,13 +31,13 @@ function onLoadData(coin,name,onLoad){
 				}else{
 					$('#redditHeader').hide();
 				}
-	  		$.get( "https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5", function( data ) {
-	  			for(var j=1;j<data.data.children.length;j++){
-		  			 var createdDate = timeAgo(data.data.children[j].data.created_utc);
-	  				$('#redditnews').append('<a class="list-group-item list-group-item-action list-group-item-light" href="https://reddit.com'+data.data.children[j].data.permalink+'" target="_blank"> <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.data.children[j].data.title+'</h5></div><small>'+createdDate+'</small><small> Comments :'+data.data.children[j].data.num_comments+'</small> </a>');
+	  		$.get( "https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5", function( subredditdata ) {
+	  			for(var j=1;j<subredditdata.data.children.length;j++){
+		  			 var createdDate = timeAgo(subredditdata.data.children[j].data.created_utc);
+	  				$('#redditnews').append('<a class="list-group-item list-group-item-action list-group-item-light" href="https://reddit.com'+subredditdata.data.children[j].data.permalink+'" target="_blank"> <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+subredditdata.data.children[j].data.title+'</h5></div><small>'+createdDate+'</small><small> Comments :'+subredditdata.data.children[j].data.num_comments+'</small> </a>');
 		  		}
 		  		checkProgressBar();
-		  		if(data.data.children.length > 0){
+		  		if(subredditdata.data.children.length > 0){
 		  			$('#redditnews').show();
 		  		}else{
 		  			$('#redditnews').hide();
@@ -52,14 +52,14 @@ function onLoadData(coin,name,onLoad){
 		$('#selectedCoin').append(name);
 
 		// Main Account Data
-		$.get( "/twitterData/twMainAcc/"+coin, function( data ) {	
-			for(var j=0;j<data.length;j++){
-	  			if(data[j].entities.urls.length > 0){
-	  				$('#twitternews1').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data[j].text+'</h5></div><small>Reweeted '+data[j].retweet_count+' </small><small>Favorite '+data[j].favorite_count+'</small></a>');	
+		$.get( "/twitterData/twMainAcc/"+coin, function( maincoindata ) {	
+			for(var j=0;j<maincoindata.length;j++){
+	  			if(maincoindata[j].entities!= undefined && maincoindata[j].entities.urls.length > 0){
+	  				$('#twitternews1').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+maincoindata[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+maincoindata[j].text+'</h5></div><small>Reweeted '+maincoindata[j].retweet_count+' </small><small>Favorite '+maincoindata[j].favorite_count+'</small></a>');	
 	  			}
   			}
   			checkProgressBar();
-  			if(data.length>0){
+  			if(maincoindata.length>0){
   				$('#OfficalTweet').show();
   			}else{
   				$('#OfficalTweet').hide();
@@ -69,18 +69,20 @@ function onLoadData(coin,name,onLoad){
 		});
 
 		// HashTag Data
-		$.get( "/twitterData/twitterData/"+coin, function( data ) {	
-			for(var j=0;j<data.statuses.length;j++){
-				if(data.statuses[j].entities.urls[0]!= undefined){
-					$('#twitternews2').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data.statuses[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data.statuses[j].text+'</h5></div></a>');	
+		$.get( "/twitterData/twitterData/"+coin, function( hashtagdata ) {
+			if(hashtagdata != undefined){
+			for(var j=0;j<hashtagdata.statuses.length;j++){
+				if(hashtagdata.statuses[j].entities.urls[0]!= undefined){
+					$('#twitternews2').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+hashtagdata.statuses[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+hashtagdata.statuses[j].text+'</h5></div></a>');	
 				}
 	  		}
 	  		checkProgressBar();
-	  		if(data.statuses.length>0){
+	  		if(hashtagdata.statuses.length>0){
   				$('#pplTweets').show();
   			}else{
   				$('#pplTweets').hide();
   			}
+  		}
 		}).fail(function() {
    			 checkProgressBar();
 		  });
