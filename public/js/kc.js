@@ -122,7 +122,7 @@ var drawChart = function(priceData){
                     },
                     scaleLabel: {
                     	display: true,
-                    	labelString: today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear()
+                    	labelString: today.getDate() + '/' + Number(today.getMonth()+1) + '/' + today.getFullYear()
                     }
                 }],
                 yAxes: [{
