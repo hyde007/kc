@@ -50,7 +50,7 @@ function onLoadData(coin,name,onLoad){
 		// Main Account Data
 		$.get( "/twitterData/twMainAcc/"+coin, function( data ) {	
 			for(var j=0;j<data.length;j++){
-	  			if(data[j].entities.urls[0]!= undefined){
+	  			if(data[j].entities.urls.length > 0){
 	  				$('#twitternews1').append('<a class="list-group-item list-group-item-action list-group-item-light" href="'+data[j].entities.urls[0].url+'" target="_blank"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+data[j].text+'</h5></div><small>Reweeted '+data[j].retweet_count+' </small><small>Favorite '+data[j].favorite_count+'</small></a>');	
 	  			}
   			}
