@@ -43,7 +43,11 @@ function onLoadData(coin,name,onLoad){
 		  			$('#redditnews').hide();
 		  		}
 		  		
-			});
+			}).fail(function() {
+   			 checkProgressBar();
+		  });
+		  }).fail(function() {
+   			 checkProgressBar();
 		  });
 		$('#selectedCoin').append(name);
 
@@ -60,7 +64,9 @@ function onLoadData(coin,name,onLoad){
   			}else{
   				$('#OfficalTweet').hide();
   			}
-  		});
+  		}).fail(function() {
+   			 checkProgressBar();
+		});
 
 		// HashTag Data
 		$.get( "/twitterData/twitterData/"+coin, function( data ) {	
@@ -75,12 +81,16 @@ function onLoadData(coin,name,onLoad){
   			}else{
   				$('#pplTweets').hide();
   			}
-		});
+		}).fail(function() {
+   			 checkProgressBar();
+		  });
 
 		$.get( "/priceData/histominute/"+coin, function( priceData) {
 			drawChart(priceData,coin);
 			checkProgressBar();
-        });
+        }).fail(function() {
+   			 checkProgressBar();
+		});
 	
 }
 
