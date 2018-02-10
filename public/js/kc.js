@@ -116,10 +116,10 @@ var drawChart = function(priceData){
         type: 'line',
         data: {
             datasets: [{
-                label: coin,
                 data: valueData,
-                backgroundColor: '#3CBA9F',
-                fill: false
+                fill: false,
+                pointRadius: 0,
+                borderColor: '#3CBA9F'
             }],
             labels: timeData
         },
