@@ -134,6 +134,7 @@ var drawChart = function(priceData){
             labels: timeData
         },
         options: {
+        	maintainAspectRatio: false,
             scales: {
                 xAxes: [{
                     type: 'time',
