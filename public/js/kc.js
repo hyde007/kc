@@ -106,16 +106,26 @@ var drawChart = function(priceData){
     var ctx = document.getElementById("myChart");
     var timeData = [];
     var valueData = [];
-    for(var i=0;i<priceData.length;i++){
+    var priceDataLength = priceData.length;
+    for(var i=0;i<priceDataLength;i++){
       timeData.push(new Date(priceData[i].time*1000));
       valueData.push(priceData[i].high);
     }
+
+    var currentPrice = priceData[priceDataLength-1].high;
+    var maxPrice = Math.max(...valueData);
+    var minPrice = Math.min(...valueData);
+
+    document.getElementsByClassName('current-price')[0].innerHTML = '$'+currentPrice;
+    document.getElementsByClassName('24hr-high')[0].innerHTML = '$'+maxPrice;
+    document.getElementsByClassName('24hr-low')[0].innerHTML = '$'+minPrice;
     var coin = $('#currentCoin')[0].value;
     var today = new Date();
     myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
+                label: coin,
                 data: valueData,
                 fill: false,
                 pointRadius: 0,
