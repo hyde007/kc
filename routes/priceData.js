@@ -11,7 +11,7 @@ var cache = (duration) => {
     let cachedBody = mcache.get(key)
     console.log('cache method:'+key+" size:"+mcache.size());
     if (cachedBody) {
-      res.send(cachedBody)
+      res.send(JSON.parse(cachedBody))
       console.log('Cached Response');
       return
     } else {
@@ -28,6 +28,7 @@ var cache = (duration) => {
 
 // Price Data for Histogram in Minutes
 router.get('/histominute/:id',cache(60),function(req,res){
+  var coin = configVal.get('COIN_'+req.params.id);
 	getHistoMinData(req.params.id,res);
 });
 

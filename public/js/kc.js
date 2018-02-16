@@ -1,11 +1,10 @@
 function onLoadData(coin,name,onLoad){
-	
 	if(onLoad == 1){
-			$.get( "https://api.coinmarketcap.com/v1/ticker/", function( coindata ) {
+			$.get( "/genericData/allcoins", function( coindata ) {
 			checkProgressBar();
 			for(var i=0;i<coindata.length;i++){
-		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+coindata[i]['symbol']+'\',\''+coindata[i]['name']+'\');">'+coindata[i]['name']+'</a></li>');
-		  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="javascript:load(\''+coindata[i]['symbol']+'\',\''+coindata[i]['name']+'\');">'+coindata[i]['name']+'</a></li>');
+		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="/coin/'+coindata[i]['symbol']+'/'+coindata[i]['name']+'">'+coindata[i]['name']+'</a></li>');
+		  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="/coin/'+coindata[i]['symbol']+'/'+coindata[i]['name']+'">'+coindata[i]['name']+'</a></li>');
 		  	}
 
 		});	
@@ -26,32 +25,36 @@ function onLoadData(coin,name,onLoad){
 	// Load subreddits
 
 	$.get( "/genericData/subreddits/"+coin, function( subreddit ) {
+				console.log("subreddit:"+subreddit);
 				if(subreddit.length > 0){
 					$('#redditHeader').show();
+					$.get( "https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5", function( subredditdata ) {
+			  			try{
+				  			for(var j=1;j<subredditdata.data.children.length;j++){
+					  			 var createdDate = timeAgo(subredditdata.data.children[j].data.created_utc);
+				  				$('#redditnews').append('<a class="list-group-item list-group-item-action list-group-item-light" href="https://reddit.com'+subredditdata.data.children[j].data.permalink+'" target="_blank"> <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+subredditdata.data.children[j].data.title+'</h5></div><small>'+createdDate+'</small><small> Comments :'+subredditdata.data.children[j].data.num_comments+'</small> </a>');
+					  		}
+					  		checkProgressBar();
+					  		if(subredditdata.data.children.length > 0){
+					  			$('#redditnews').show();
+					  		}else{
+					  			$('#redditnews').hide();
+					  		}
+				  		}catch(err){
+				  			log(err, "Error URL: https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5");
+				  			checkProgressBar();
+				  		}
+					}).fail(function() {
+		   			 checkProgressBar();
+				  	});
 				}else{
 					$('#redditHeader').hide();
+					checkProgressBar();
 				}
-	  		$.get( "https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5", function( subredditdata ) {
-	  			try{
-		  			for(var j=1;j<subredditdata.data.children.length;j++){
-			  			 var createdDate = timeAgo(subredditdata.data.children[j].data.created_utc);
-		  				$('#redditnews').append('<a class="list-group-item list-group-item-action list-group-item-light" href="https://reddit.com'+subredditdata.data.children[j].data.permalink+'" target="_blank"> <div class="d-flex w-100 justify-content-between"><h5 class="mb-1">'+subredditdata.data.children[j].data.title+'</h5></div><small>'+createdDate+'</small><small> Comments :'+subredditdata.data.children[j].data.num_comments+'</small> </a>');
-			  		}
-			  		checkProgressBar();
-			  		if(subredditdata.data.children.length > 0){
-			  			$('#redditnews').show();
-			  		}else{
-			  			$('#redditnews').hide();
-			  		}
-		  		}catch(err){
-		  			log(err, "Error URL: https://www.reddit.com/r/"+subreddit+"/hot.json?limit=5");
-		  		}
-			}).fail(function() {
+	  		
+	}).fail(function() {
    			 checkProgressBar();
-		  });
-		  }).fail(function() {
-   			 checkProgressBar();
-		  });
+	});
 		$('#selectedCoin').append(name);
 
 		// Main Account Data
@@ -70,6 +73,7 @@ function onLoadData(coin,name,onLoad){
 	  			}
 	  		}catch(err){
 	  			log(err, "Error: /twitterData/twMainAcc/"+coin);
+	  			checkProgressBar();
 	  		}
   		}).fail(function() {
    			 checkProgressBar();
@@ -93,10 +97,11 @@ function onLoadData(coin,name,onLoad){
 	  		  }
   			}catch(err){
   				log(err, "Error: /twitterData/twitterData/"+coin);
+  				checkProgressBar();
   			}
 		}).fail(function() {
    			 checkProgressBar();
-		  });
+		});
 
 		$.get( "/priceData/histominute/"+coin, function( priceData) {
 			drawChart(priceData,coin);
@@ -109,11 +114,17 @@ function onLoadData(coin,name,onLoad){
 
 function load(coin,name){ 		
 	$('#currentCoin')[0].value=coin;
+	window.history.replaceState(window.history.state,'','/');
+	window.history.pushState(window.history.state,'','/coin/'+coin+'/'+name);
 	checkProgressBar();
 	onLoadData(coin,name);
 }
 
 var drawChart = function(priceData){
+	if(priceData != null && priceData.length == 0){
+		return;
+		checkProgressBar();
+	}
 	try{
 		    var ctx = document.getElementById("myChart");
 		    var timeData = [];
@@ -172,15 +183,21 @@ var drawChart = function(priceData){
 		    checkProgressBar();
 	}catch(err){
 		log(err, 'Error: Chart');
+		checkProgressBar();
 	}
 }
 
 checkProgressBar = function(){
+	return;
+	console.log("checkProgressBar");
 	if(typeof count == 'undefined'){
 		count = 0;
 	}
+	if(count > 4){
+		console.log(count);
+	}
 	if($('#progress').is(':visible')){
-		var widthPercent = $("#progress").width() / $('#progress').parent().width() * 100;
+		var widthPercent = $("#progress").width() / $('#progressBar').width() * 100;
 		if(widthPercent < 100){
 	   			if((widthPercent + 20) == 100){
 	   				count = 0;
@@ -189,7 +206,7 @@ checkProgressBar = function(){
 	   			}else{
 	   				if(count != 5){
 	   				newWidth = newWidth + '%';
-	   				var currentWidth = ($("#progress").width() / $('#progress').parent().width() * 100);
+	   				var currentWidth = ($("#progress").width() / $('#progressBar').width() * 100);
 	   				var newWidth = (100-currentWidth)/(5-count);
 	   				newWidth = newWidth + '%';
 	   				$('#progress').width(newWidth);

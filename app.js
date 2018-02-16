@@ -6,7 +6,8 @@ var Twitter = require('twitter');
 var HashMap = require('hashmap');
 var winston = require('winston');
 require('winston-daily-rotate-file');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var mustacheExpress = require('mustache-express');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +29,12 @@ for(k in process.env){
 }
 
 app.use(express.static('public'));
+
+// Register '.mustache' extension with The Mustache Express
+app.engine('mustache', mustacheExpress());
+
+app.set('view engine', 'mustache');
+app.set('views', __dirname + '/views');
 
 /**
  * Instantiate the logger

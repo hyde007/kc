@@ -18,26 +18,26 @@
       <meta content='yes' name='apple-mobile-web-app-capable'>
       <meta content='crypto, cryptocurreny, news, neo, omg, coinbase, koinex, unocoin, usd, inr, eth inr, eth/inr, ethereum inr price, ethereum india, buy and sell ether in india, eth price in inr, ether india, ether INR, ether exchange india, ethereum exchange india, ether exchange india, buy ether india, sell ether india, buy ethereum india, sell ethereum india, ether inr, ether coin india, ether coin inr, ether to inr conversion, ethereum to inr conversion, inr to ether, inr to ethereum, buy ether coin, sell ether coin, buy ethereum coin, sell ethereum coin, buy ethereum token, sell ethereum token, bitcoin exchange delhi, bitcoin exchange india,bitcoin india buy bitcoin india, sell bitcoin india, btc inr,bitcoin, buy bitcoin, sell bitcoin, buy bitcoin india, sell bitcoin india, bitcoin india, bitcoin wallet india, store bitcoin india, buy bitcoin inr, sell bitcoin inr, send bitcoin, send bitcoin india, receive bitcoin, receive bitcoin india, bitcoin price, btc price in inr, bitcoin india, Bitcoin INR' name='keywords'>
       <title>Koincontrol</title>
-      <link rel="stylesheet" href="css/bootstrap.min.css"/>
-      <link rel="stylesheet" href="css/font-awesome.min.css">
-      <link rel="stylesheet" href="css/kc.css">
-      <link rel="stylesheet" href="css/dashboard.css">
-      <script type="text/javascript" src="js/currency.js"></script>
-      <script type="text/javascript" src="js/kc.js"></script>
-      <script src="js/jquery.min.js"></script>
-      <script type = "text/javascript" src="js/moment.js"></script>
-      <script type = "text/javascript" src="js/Chart.min.js"></script>
+      <link rel="stylesheet" href="{{domain}}/css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="{{domain}}/css/font-awesome.min.css">
+      <link rel="stylesheet" href="{{domain}}/css/kc.css">
+      <link rel="stylesheet" href="{{domain}}/css/dashboard.css">
+      <script type="text/javascript" src="{{domain}}/js/currency.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/kc.js"></script>
+      <script src="{{domain}}/js/jquery.min.js"></script>
+      <script type = "text/javascript" src="{{domain}}/js/moment.js"></script>
+      <script type = "text/javascript" src="{{domain}}/js/Chart.min.js"></script>
    </head>
    <body>
-         
-      <header>
           <div id="progressBar" class="fixed-top">
                  <h2>Loading Data...</h2>
                  <div class="progress" >
                    <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
-                 </div>
+                  </div>
           </div>
-         <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">            
+      <header>
+          
+          <!--<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">            
             <a class="navbar-brand" href="#">Koincontrol<sup>Beta</sup></a>
             <button class="navbar-toggler d-lg-none collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -100,10 +100,10 @@
 
       
       <input type="hidden" id="currentCoin" name="currentCoin" value="" />
-      <script src="js/bootstrap.min.js"></script>
-      <script src="js/popper.min.js"></script>
+      <script src="{{domain}}/js/bootstrap.min.js"></script>
+      <script src="{{domain}}/js/popper.min.js"></script>
       <script type="text/javascript">
-         onLoadData('BTC','Bitcoin','1');
+         onLoadData('{{coin}}','{{name}}','1');
          jQuery(document).ready(function(){
               if (jQuery(window).width() < 900) {
                   $('#toggler').show();

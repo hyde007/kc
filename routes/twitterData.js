@@ -17,7 +17,7 @@ var cache = (duration) => {
     let cachedBody = mcache.get(key)
     console.log('cache method:'+key+" size:"+mcache.size());
     if (cachedBody) {
-      res.send(cachedBody)
+      res.send(JSON.parse(cachedBody))
       console.log('Cached Response');
       return
     } else {
@@ -35,9 +35,14 @@ var cache = (duration) => {
 // Fetch popular tweets using hashtags
 router.get('/twitterData/:id',cache(60),function(req,res){
 	var coin = configVal.get('TW_'+req.params.id+'_POPULAR');
-  twClient.get('search/tweets', {q: coin,count:15,result_type:'popular'}, function(error, tweets, response) {
+  if(coin != null){
+    twClient.get('search/tweets', {q: coin,count:15,result_type:'popular'}, function(error, tweets, response) {
       res.send(tweets);
-  });
+    });  
+  }else{
+    res.send('');
+  }
+  
 });
 
 // Fetch timelines tweets from official accounts
