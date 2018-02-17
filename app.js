@@ -60,6 +60,10 @@ app.post ('/api/logger', function( req, res, next ) {
   return res.send( 'OK' );
 });
 
+app.get('sitemap.xml',function(req,res){
+  res.sendFile(path.join(__dirname, '../public', 'sitemap.xml'));
+});
+
 var server = app.listen(8081,function(){
 	var host = server.address().address;
 	var port = server.address().port;
