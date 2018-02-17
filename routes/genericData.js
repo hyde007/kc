@@ -11,7 +11,7 @@ var cache = (duration) => {
     let cachedBody = mcache.get(key)
     console.log('cache method:'+key+" size:"+mcache.size());
     if (cachedBody) {
-      res.send(JSON.parse(cachedBody))
+      res.send(cachedBody);
       console.log('Cached Response');
       return
     } else {
