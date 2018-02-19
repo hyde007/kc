@@ -61,7 +61,7 @@ app.post ('/api/logger', function( req, res, next ) {
 });
 
 app.get('sitemap.xml',function(req,res){
-  res.sendFile(path.join(__dirname, '../public', 'sitemap.xml'));
+  res.sendfile('public/index1.html'); 
 });
 
 var server = app.listen(8081,function(){

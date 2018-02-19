@@ -244,3 +244,10 @@ timeAgo = function(prevDate){
     }
   );
 }
+
+changeDate = function(ts){
+	var publishedDate = new Date(ts*1000);
+	$('#publishedDate_'+ts)[0].innerHTML= publishedDate.getDate()+ '/'+(publishedDate.getMonth()+1)+ '/'+ publishedDate.getFullYear();
+}
+
+

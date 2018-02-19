@@ -40,4 +40,10 @@ router.get('/allcoins',cache(6000),function(req,res){
   });
 });
 
+router.get('/news',cache(6000),function(req,res){
+  client.get("https://min-api.cryptocompare.com/data/news/", function (data, response) {
+      res.send(data);
+  });
+});
+
 module.exports = router;

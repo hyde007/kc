@@ -85,3 +85,7 @@ sup{
   height: 150px;
   overflow: scroll;
 }
+
+.card-lines { 
+    height: 3.6em; 
+}
