@@ -250,4 +250,31 @@ changeDate = function(ts){
 	$('#publishedDate_'+ts)[0].innerHTML= publishedDate.getDate()+ '/'+(publishedDate.getMonth()+1)+ '/'+ publishedDate.getFullYear();
 }
 
+pushNewsData = function(){
+	$.getJSON( "/genericData/news", function( newsData ) {
+		 var template = document.querySelector("#cardTemplate").innerHTML;
+			// var rendered = Mustache.render(template, {
+  	// 			attr: "data-test",
+  	// 			attrVal: "test"
+			// });
+			// document.querySelector("#target").innerHTML = rendered;
+		//	var template = "<span>{{imageurl}}</span>"
+			// if((newsData instanceof Object)){
+			// 	newsData = JSON.stringfy(newsData);
+			// 	newsData = JSON.parse(newsData);
+			// 	console.log(newsData);
+
+			// }			
+			template = String(template);
+			$.ajax({type:'GET',async:false,url:'/genericData/news',contentType:'json',success:function(result) {
+				
+			    for(var i=0;i<result.length;i++){
+		  		var html = Mustache.to_html(template,Object(result[i]));
+		  		console.log(html);
+		  	}
+			  }});
+			
+	});	
+}
+
 

@@ -65,7 +65,7 @@
                <ul class="nav nav-pills flex-column" id="allCoins">
                </ul>
             </nav>
-            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">       
+            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3" id="mainid">       
               {{#coindata}}
                <h1><span id="selectedCoin"></span></h1>
                <section class="row text-center placeholders">
@@ -97,25 +97,23 @@
              </div>
              {{/coindata}}
               {{#homepage}}
-                <div class="card-columns">
-                  {{#news}}
-                  <div class="card" style="padding:10px;">
-                   <a href="{{guid}}" target="_blank"> <img class="card-img-top" src="{{imageurl}}" alt="Card image cap"/></a>
+              <template id="cardTemplate" >
+                <div class="col-sm-4">
+                  <div class="card">
+                    <img class="card-img-top" src="{{imageurl}}" alt="Card image cap">
                     <div class="card-block">
-                      <h4 class="card-title"> <a href="{{guid}}" target="_blank">{{title}}</a></h4>
+                      <h4 class="card-title">{{title}}</h4>
                       <p class="card-text">{{body}}</p>
                     </div>
                     <div class="card-footer">
-                      <small class="text-muted">Source: {{#source_info}}{{name}}{{/source_info}} 
-                        <input type="hidden" name="{{published_on}}" id="{{published_on}}" value="{{published_on}}" />
-                        <span id="publishedDate_{{published_on}}"></span></small>
+                      <small class="text-muted">Last updated 3 mins ago</small>
                     </div>
                   </div>
-                  <script type="text/javascript">
-                    changeDate({{published_on}});
-                  </script>
-                  {{/news}}  
-                </div>        
+                </div>
+              </template>
+              <script type="text/javascript">
+                pushNewsData();
+              </script>
               {{/homepage}}
          </main>
       </div>
