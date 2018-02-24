@@ -1,0 +1,56 @@
+   <h1 style="display:none;">cryptocurrency news about bitcoin and alt coins</h1>
+      <header>
+         <nav class="navbar navbar-toggleable-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="/">Koincontrol<sup>Beta</sup></a>
+            <button id="toggler" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation" >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto" id="mobileCoins">                
+              </ul>
+            </div>
+          </nav>
+      </header>
+      <div class="container-fluid">
+         <div class="row">
+            <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+               <ul class="nav nav-pills flex-column" id="allCoins">
+               </ul>
+            </nav>
+            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">     
+            {{#if homepage}}  
+            	{{{newsHelper news}}}
+	         {{else}}
+	         		<h1><span id="selectedCoin"></span></h1>
+	               <section class="row text-center placeholders">
+	                  <span class="col-6">Current: <span class="current-price"></span></span>
+	                  <span class="col-6"> <b>24 Hrs</b><br/>
+	                    <span class="col-2">High: <span class="24hr-high col-2"></span></span>
+	                    <span class="col-2">Low: <span class="24hr-low col-2"></span></span>
+	                  </span>
+	                  <div class="col-12 placeholder" style="position: relative; height:300px; width:250px">
+	                     <canvas id="myChart"></canvas>
+	                  </div>
+	               </section>
+	               <div class="row">
+	                  <div class="col-lg-6" >
+	                    <div id="redditHeader" class="alert alert-success" role="alert">Reddit News</div>
+	                     <div id="redditnews" class="list-group">
+	                     </div>
+	                  </div>
+	                  <div class="col-lg-6" >
+	                     <div class="alert alert-success" role="alert">Twitter News</div>
+	                     <div id="OfficalTweet" class="alert alert-info" role="alert">Offical Account</div>
+	                     <div id="twitternews1" class="list-group">
+	                     </div>
+	                     <div id="pplTweets" class="alert alert-info" role="alert" style="margin-top: 5px;">What people are tweeting</div>
+	                     <div id="twitternews2" class="list-group">
+	                     </div>
+	                  </div>
+	                </div>
+	        	   </div>
+			{{/if}}
+         </main>
+      </div>
+      <footer class="footer-bs">KoinControl should be used as a research tool and not as a investment advice.</footer>
+     </div>

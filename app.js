@@ -7,7 +7,9 @@ var HashMap = require('hashmap');
 var winston = require('winston');
 require('winston-daily-rotate-file');
 var bodyParser = require('body-parser');
-var mustacheExpress = require('mustache-express');
+var hbs = require('express-handlebars');
+
+var hdhelper = require('./views/helper/hbshelper.js');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,10 +32,12 @@ for(k in process.env){
 
 app.use(express.static('public'));
 
-// Register '.mustache' extension with The Mustache Express
-app.engine('mustache', mustacheExpress());
+var hbsengine = hbs.create({defaultLayout: 'index'});
 
-app.set('view engine', 'mustache');
+app.engine('handlebars',hbsengine.engine);
+
+
+app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
 /**
