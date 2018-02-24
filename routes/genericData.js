@@ -40,4 +40,5 @@ router.get('/allcoins',cache(6000),function(req,res){
   });
 });
 
+
 module.exports = router;
