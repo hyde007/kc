@@ -4,7 +4,7 @@
       <!-- Global site tag (gtag.js) - Google Analytics -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113720219-1"></script>
       <script>
-        window.dataLayer = window.dataLayer || [];
+        window.dataLayer=window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
@@ -23,30 +23,30 @@
       <meta content='yes' name='apple-mobile-web-app-capable'>
       <meta content='crypto, cryptocurreny, news, neo, omg, coinbase, koinex, unocoin, usd, inr, eth inr, eth/inr, ethereum inr price, ethereum india, buy and sell ether in india, eth price in inr, ether india, ether INR, ether exchange india, ethereum exchange india, ether exchange india, buy ether india, sell ether india, buy ethereum india, sell ethereum india, ether inr, ether coin india, ether coin inr, ether to inr conversion, ethereum to inr conversion, inr to ether, inr to ethereum, buy ether coin, sell ether coin, buy ethereum coin, sell ethereum coin, buy ethereum token, sell ethereum token, bitcoin exchange delhi, bitcoin exchange india,bitcoin india buy bitcoin india, sell bitcoin india, btc inr,bitcoin, buy bitcoin, sell bitcoin, buy bitcoin india, sell bitcoin india, bitcoin india, bitcoin wallet india, store bitcoin india, buy bitcoin inr, sell bitcoin inr, send bitcoin, send bitcoin india, receive bitcoin, receive bitcoin india, bitcoin price, btc price in inr, bitcoin india, Bitcoin INR' name='keywords'>
       <title>Koincontrol</title>
-      <link rel="stylesheet" href="{{domain}}/css/bootstrap.min.css"/>
-      <link rel="stylesheet" href="{{domain}}/css/font-awesome.min.css">
-      <link rel="stylesheet" href="{{domain}}/css/kc.css">
-      <link rel="stylesheet" href="{{domain}}/css/dashboard.css">
-      <script type="text/javascript" src="{{domain}}/js/currency.js"></script>
-      <script type="text/javascript" src="{{domain}}/js/kc.js"></script>
-      <script src="{{domain}}/js/jquery.min.js"></script>
-      <script type = "text/javascript" src="{{domain}}/js/moment.js"></script>
-      <script type = "text/javascript" src="{{domain}}/js/Chart.min.js"></script>
+      
    </head>
    <body>
      {{{body}}}
       <input type="hidden" id="currentCoin" name="currentCoin" value="" />
-      <script src="{{domain}}/js/bootstrap.min.js"></script>
-      <script src="{{domain}}/js/popper.min.js"></script>
+      <link rel="stylesheet" href="{{domain}}/css/bootstrap.min.css"/>
+      <link rel="stylesheet" href="{{domain}}/css/font-awesome.min.css">
+      <link rel="stylesheet" href="{{domain}}/css/dashboard.css">
+      <script type="text/javascript" src="{{domain}}/js/currency.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/kc.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/jquery.min.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/moment.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/Chart.min.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="{{domain}}/js/popper.min.js"></script>
       <script type="text/javascript">
-         onLoadData('{{coin}}','{{name}}','1');
-         jQuery(document).ready(function(){
-              if (jQuery(window).width() < 900) {
-                  $('#toggler').show();
-              }else{
-                  $('#toggler').hide();
-              }
-          });
+        jQuery(document).ready(function(){
+          onLoadData('{{coin}}','{{name}}','1');
+          if (jQuery(window).width() < 900) {
+            $('#toggler').show();
+          }else{
+            $('#toggler').hide();
+          }
+        });
       </script>
    </body>
 </html>
