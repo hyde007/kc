@@ -1,5 +1,4 @@
 var router = require('express').Router();
-var mcache = require('memory-cache');
 var HashMap = require('hashmap');
 var dotenv = require('dotenv').config({path: './devData.env'});
 

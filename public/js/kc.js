@@ -1,14 +1,17 @@
 function onLoadData(coin,name,onLoad){
-	if(onLoad == 1){
-			$.get( "/genericData/allcoins", function( coindata ) {
-			checkProgressBar();
-			for(var i=0;i<coindata.length;i++){
-		  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="/coin/'+coindata[i]['symbol']+'/'+coindata[i]['name']+'">'+coindata[i]['name']+'</a></li>');
-		  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="/coin/'+coindata[i]['symbol']+'/'+coindata[i]['name']+'">'+coindata[i]['name']+'</a></li>');
-		  	}
-
-		});	
+	if($('#homepage').val() == 'true'){
+		return;
 	}
+	// if(onLoad == 1){
+	// 		$.get( "/genericData/allcoins", function( coindata ) {
+	// 		checkProgressBar();
+	// 		for(var i=0;i<coindata.length;i++){
+	// 	  		$('#allCoins').append('<li class="nav-item"><a class="nav-link" href="/coin/'+coindata[i]['symbol']+'/'+coindata[i]['name']+'">'+coindata[i]['name']+'</a></li>');
+	// 	  		$('#mobileCoins').append('<li class="nav-item"><a class="nav-link" href="/coin/'+coindata[i]['symbol']+'/'+coindata[i]['name']+'">'+coindata[i]['name']+'</a></li>');
+	// 	  	}
+
+	// 	});	
+	// }
 	
 	//Clear the data
 	$('#redditnews').empty();

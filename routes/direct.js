@@ -2,7 +2,6 @@ var router = require('express').Router();
 var path = require('path');
 var Client = require('node-rest-client').Client;
 var client = new Client();
-var mcache = require('memory-cache');
 var Handlebars = require('handlebars');
 
 // Handlebar Helpers
@@ -13,15 +12,15 @@ Handlebars.registerHelper('newsHelper', function(news){
     var publishedDate = new Date(news[i].published_on*1000);
 
     if(counter == 2){
-      html = html + '<div class="card col-lg-4" style="padding:5px;"><img class="card-img-top" src="'+news[i].imageurl+'" alt="Card image cap"><div class="card-block"><h4 class="card-title block-text">'+news[i].title+'</h4><p class="card-text block-ellipsis">'+news[i].body+'</p><p class="card-text"><small class="text-muted"><div>Published: '+publishedDate.getDate()+'/'+publishedDate.getMonth()+'/'+publishedDate.getFullYear()+'</div> <div id="source">Source: '+news[i].source+'</div></small></p></div></div>';
+      html = html + '<div class="card col-lg-4" style="padding:5px;"><a href="'+news[i].url+'" target="_blank"><img class="card-img-top" src="'+news[i].imageurl+'" alt="Card image cap"></a><div class="card-block"><h4 class="card-title block-text">'+news[i].title+'</h4><p class="card-text block-ellipsis">'+news[i].body+'</p><p class="card-text"><small class="text-muted"><div>Published: '+publishedDate.getDate()+'/'+publishedDate.getMonth()+'/'+publishedDate.getFullYear()+'</div> <div id="source">Source: '+news[i].source+'</div></small></p></div></div>';
       html = html + '</div>';
       counter = 0;
     }else if(counter == 0){
       html = html + '<div class="row" style="margin:5px;">';
-      html = html + '<div class="card col-lg-4" style="padding:5px;"><img class="card-img-top" src="'+news[i].imageurl+'" alt="Card image cap"><div class="card-block"><h4 class="card-title block-text">'+news[i].title+'</h4><p class="card-text block-ellipsis">'+news[i].body+'</p><p class="card-text"><small class="text-muted"><div>Published: '+publishedDate.getDate()+'/'+publishedDate.getMonth()+'/'+publishedDate.getFullYear()+'</div> <div id="source">Source: '+news[i].source+'</div></small></p></div></div>';
+      html = html + '<div class="card col-lg-4" style="padding:5px;"><a href="'+news[i].url+'" target="_blank"><img class="card-img-top" src="'+news[i].imageurl+'" alt="Card image cap"></a><div class="card-block"><h4 class="card-title block-text">'+news[i].title+'</h4><p class="card-text block-ellipsis">'+news[i].body+'</p><p class="card-text"><small class="text-muted"><div>Published: '+publishedDate.getDate()+'/'+publishedDate.getMonth()+'/'+publishedDate.getFullYear()+'</div> <div id="source">Source: '+news[i].source+'</div></small></p></div></div>';
       counter = counter + 1;
     }else{
-      html = html + '<div class="card col-lg-4" style="padding:5px;"><img class="card-img-top" src="'+news[i].imageurl+'" alt="Card image cap"><div class="card-block"><h4 class="card-title block-text">'+news[i].title+'</h4><p class="card-text block-ellipsis">'+news[i].body+'</p><p class="card-text"><small class="text-muted"><div>Published: '+publishedDate.getDate()+'/'+publishedDate.getMonth()+'/'+publishedDate.getFullYear()+'</div> <div id="source">Source: '+news[i].source+'</div></small></p></div></div>';  
+      html = html + '<div class="card col-lg-4" style="padding:5px;"><a href="'+news[i].url+'" target="_blank"><img class="card-img-top" src="'+news[i].imageurl+'" alt="Card image cap"></a><div class="card-block"><h4 class="card-title block-text">'+news[i].title+'</h4><p class="card-text block-ellipsis">'+news[i].body+'</p><p class="card-text"><small class="text-muted"><div>Published: '+publishedDate.getDate()+'/'+publishedDate.getMonth()+'/'+publishedDate.getFullYear()+'</div> <div id="source">Source: '+news[i].source+'</div></small></p></div></div>';
       counter = counter + 1;
     }
    }
@@ -56,6 +55,39 @@ var cache = (duration) => {
 }
 
 
+// Get List of coins
+getCoinsList = function(){
+  console.log('call to get coins list');
+  var cachedCoins = mcache.get('allCoinList');
+  if(cachedCoins){
+    console.log('Got from cache');
+    return cachedCoins;
+  }else{
+    console.log('Getting from call');
+    client.get("https://api.coinmarketcap.com/v1/ticker/", function (data, response) {
+          mcache.put('allCoinList', data, 60000 * 1000);
+          return data;
+    });
+  }
+}
+
+gotoHomePage = function(req,res){
+
+  if(configVal.get('NODE_ENV') == 'Prod'){
+    var domainName = 'http://koincontrol.com';
+  }else{
+    var domainName = 'http://localhost:8081';
+  }
+  var news = '';
+  var allCoinList = '';
+  client.get("https://min-api.cryptocompare.com/data/news/",function (data, response) {
+      news = data;
+      allCoinList = getCoinsList();
+      res.render('home',{domain:domainName,coin:'BTC',name:'Bitcoin',homepage:true,news:news,allCoins:allCoinList});
+  });
+
+}
+
 // Get Subreddit
 router.get('/coin/:id1/:id2',function(req,res){
   if(configVal.get('NODE_ENV') == 'Prod'){
@@ -63,19 +95,12 @@ router.get('/coin/:id1/:id2',function(req,res){
   }else{
   	var domainName = 'http://localhost:8081';
   }
-  res.render('home',{domain:domainName,coin:req.params.id1,name:req.params.id2,homepage:false});
+  var allCoinList = getCoinsList();
+  res.render('home',{domain:domainName,coin:req.params.id1,name:req.params.id2,homepage:false,allCoins:allCoinList});
 });
 
-router.get('/',cache(6000),function(req,res){
-  if(configVal.get('NODE_ENV') == 'Prod'){
-  	var domainName = 'http://koincontrol.com';
-  }else{
-  	var domainName = 'http://localhost:8081';
-  }
-  client.get("https://min-api.cryptocompare.com/data/news/",function (data, response) {
-      res.render('home',{domain:domainName,coin:'BTC',name:'Bitcoin',homepage:true,news:data});
-  });
-  
+router.get('/',function(req,res){
+  gotoHomePage(req,res);
 });
 
 module.exports = router;

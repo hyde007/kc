@@ -1,5 +1,4 @@
 var router = require('express').Router();
-var mcache = require('memory-cache');
 var Client = require('node-rest-client').Client;
 var client = new Client();
 
@@ -27,18 +26,18 @@ var cache = (duration) => {
 }
 
 // Get Subreddit
-router.get('/subreddits/:id',cache(600),function(req,res){
+router.get('/subreddits/:id',function(req,res){
   var subreddits = configVal.get('REDDIT_'+req.params.id);
   res.send(subreddits);
 });
 
 
-// Get Subreddit
-router.get('/allcoins',cache(6000),function(req,res){
-  client.get("https://api.coinmarketcap.com/v1/ticker/", function (data, response) {
-      res.send(data);
-  });
-});
+// // Get Subreddit
+// router.get('/allcoins',cache(6000),function(req,res){
+//   client.get("https://api.coinmarketcap.com/v1/ticker/", function (data, response) {
+//       res.send(data);
+//   });
+// });
 
 
 module.exports = router;

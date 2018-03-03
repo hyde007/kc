@@ -35,18 +35,5 @@
    </head>
    <body>
      {{{body}}}
-      <input type="hidden" id="currentCoin" name="currentCoin" value="" />
-      <script src="{{domain}}/js/bootstrap.min.js"></script>
-      <script src="{{domain}}/js/popper.min.js"></script>
-      <script type="text/javascript">
-         onLoadData('{{coin}}','{{name}}','1');
-         jQuery(document).ready(function(){
-              if (jQuery(window).width() < 900) {
-                  $('#toggler').show();
-              }else{
-                  $('#toggler').hide();
-              }
-          });
-      </script>
    </body>
 </html>

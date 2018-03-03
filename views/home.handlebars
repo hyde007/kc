@@ -6,7 +6,12 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto" id="mobileCoins">                
+              <ul class="navbar-nav mr-auto" id="mobileCoins">    
+              		{{#each allCoins}}
+              			<li class="nav-item">
+              				<a class="nav-link" href="/coin/{{symbol}}/{{name}}">{{name}}</a>
+              			</li>
+              		{{/each}}
               </ul>
             </div>
           </nav>
@@ -15,6 +20,11 @@
          <div class="row">
             <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
                <ul class="nav nav-pills flex-column" id="allCoins">
+               		{{#each allCoins}}
+	               		<li class="nav-item">
+	               			<a class="nav-link" href="/coin/{{symbol}}/{{name}}">{{name}}</a>
+	               		</li>
+               		{{/each}}
                </ul>
             </nav>
             <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">     
@@ -54,3 +64,19 @@
       </div>
       <footer class="footer-bs">KoinControl should be used as a research tool and not as a investment advice.</footer>
      </div>
+     <input type="hidden" id="currentCoin" name="currentCoin" value="{{homepage}}" />
+     <input type="hidden" id="homepage" name="homepage" value="{{homepage}}" />
+      <script src="{{domain}}/js/bootstrap.min.js"></script>
+      <script src="{{domain}}/js/popper.min.js"></script>
+      <script type="text/javascript">
+         onLoadData('{{coin}}','{{name}}','1');
+      </script>
+      <script type="text/javascript">
+         jQuery(document).ready(function(){
+              if (jQuery(window).width() < 900) {
+                  $('#toggler').show();
+              }else{
+                  $('#toggler').hide();
+              }
+          });
+      </script>

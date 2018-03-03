@@ -1,7 +1,6 @@
 var Client = require('node-rest-client').Client;
 var client = new Client();
 var router = require('express').Router();
-var mcache = require('memory-cache');
 var HashMap = require('hashmap');
 
 // Caching setup

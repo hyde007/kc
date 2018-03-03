@@ -8,6 +8,7 @@ var winston = require('winston');
 require('winston-daily-rotate-file');
 var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
+mcache = require('memory-cache');
 
 var hdhelper = require('./views/helper/hbshelper.js');
 
