@@ -9,6 +9,7 @@ require('winston-daily-rotate-file');
 var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
 mcache = require('memory-cache');
+var helmet = require('helmet');
 
 var hdhelper = require('./views/helper/hbshelper.js');
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/',routes);
+app.use(helmet());
 
 twClient = new Twitter({
   consumer_key: process.env.TW_CONSUMER_KEY,
@@ -40,6 +42,7 @@ app.engine('handlebars',hbsengine.engine);
 
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
+
 
 /**
  * Instantiate the logger
